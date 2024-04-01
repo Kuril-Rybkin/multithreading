@@ -233,9 +233,6 @@ private:
             /// Since for every problem in the solver, there is a corresponding problem to it's originating problem pack
             for (auto i : solver.second) {
                 unique_lock<mutex> ul_senders(mtx_senders);
-//                printf("TRYING TO TAKE OWNERSHIP OF MUTEX IN WORKER...\n");
-//                unique_lock<mutex> ul_tproblem(i->m_mtx);
-//                printf("...WORKER GOT MUTEX\n");
                 /// Decrement the number of remaining unsolved problems (A problem was just solved by the solver)
                 i->m_problems--;
 
@@ -261,9 +258,6 @@ private:
             /// Wait until a signal is received to continue and check that the pack infront is solved before sending it
             unique_lock<mutex> ul_senders(mtx_senders);
             senders.wait(ul_senders, [&]() {
-//                printf("TRYING TO TAKE OWNERSHIP OF MUTEX IN SENDER...\n");
-//                unique_lock<mutex> ul(pack->m_mtx);
-//                printf("...SENDER GOT MUTEX\n");
                 if (pack->m_problems == 0) {
                     return true;
                 }
